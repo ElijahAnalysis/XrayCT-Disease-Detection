@@ -1,5 +1,7 @@
 Images dataset was found at : https://www.kaggle.com/datasets/paultimothymooney/chest-xray-pneumonia/data 
 
+and from here : https://www.kaggle.com/datasets/amanullahasraf/covid19-pneumonia-normal-chest-xray-pa-dataset
+
 Context
 http://www.cell.com/cell/fulltext/S0092-8674(18)30154-5
 
