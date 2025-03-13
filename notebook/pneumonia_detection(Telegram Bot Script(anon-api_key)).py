@@ -13,7 +13,7 @@ from telegram.error import NetworkError
 nest_asyncio.apply()
 
 # Load pre-trained model
-MODEL_PATH = r"C:\Users\User\Desktop\pneumonia_detection_project\models\lung_scans_sequential_neural_net.keras"
+MODEL_PATH = r"C:\Users\User\Desktop\DATA SCIENCE\Github\Pneumonia-Detection\models\lung_scans_sequential_neural_net_version2.keras"
 model = load_model(MODEL_PATH)
 
 # Class labels
