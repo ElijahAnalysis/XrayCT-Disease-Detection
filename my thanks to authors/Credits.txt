@@ -4,4 +4,7 @@ and from here : https://www.kaggle.com/datasets/amanullahasraf/covid19-pneumonia
 
 and here https://www.kaggle.com/datasets/subhajeetdas/iq-othnccd-lung-cancer-dataset-augmented
 
+and here https://www.kaggle.com/datasets/tawsifurrahman/tuberculosis-tb-chest-xray-dataset
+
+
 Big thanks to you all!
