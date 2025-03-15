@@ -39,13 +39,13 @@ class WeightedSparseCategoricalCrossentropy(tf.keras.losses.Loss):
 custom_loss = WeightedSparseCategoricalCrossentropy(weights=[1.0, 1.5, 2.0])
 
 # Model paths
-PNEUMONIA_MODEL_PATH = r"C:\Users\User\Desktop\DATA SCIENCE\Github\LungXrayCT-Disease-Detection\models\pneumonia\lung_xray_scan_cases_sequential_neural_net_version2.keras"
+PNEUMONIA_MODEL_PATH = r"C:\Users\User\Desktop\DATA SCIENCE\Github\XrayCT-Disease-Detection\models\pneumonia\lung_xray_scan_cases_sequential_neural_net_version2.keras"
 
-LUNG_CANCER_MODEL_PATH = r"C:\Users\User\Desktop\DATA SCIENCE\Github\LungXrayCT-Disease-Detection\models\lung_tumor\lung_ct_scan_cases_sequential_neural_net.keras"
+LUNG_CANCER_MODEL_PATH = r"C:\Users\User\Desktop\DATA SCIENCE\Github\XrayCT-Disease-Detection\models\lung_tumor\lung_ct_scan_cases_sequential_neural_net.keras"
 
-TUBERCULOSIS_MODEL_PATH = r"C:\Users\User\Desktop\DATA SCIENCE\Github\LungXrayCT-Disease-Detection\models\tuberculosis\tuberculosis_xray_scans_sequential_neural_net.keras"
+TUBERCULOSIS_MODEL_PATH = r"C:\Users\User\Desktop\DATA SCIENCE\Github\XrayCT-Disease-Detection\models\tuberculosis\tuberculosis_xray_scans_sequential_neural_net.keras"
 
-OBESITY_MODEL_PATH = r"C:\Users\User\Desktop\DATA SCIENCE\Github\LungXrayCT-Disease-Detection\models\obesity\obesity_stacking.joblib"  # Add path to your obesity model
+OBESITY_MODEL_PATH = r"C:\Users\User\Desktop\DATA SCIENCE\Github\XrayCT-Disease-Detection\models\obesity\obesity_stacking.joblib"  # Add path to your obesity model
 
 # Load models
 pneumonia_model = load_model(PNEUMONIA_MODEL_PATH)
@@ -225,7 +225,7 @@ async def age(update: Update, context: CallbackContext) -> int:
     user_id = update.effective_user.id
     try:
         user_data[user_id]['age'] = float(update.message.text)
-        await update.message.reply_text("Enter your height (in meters, e.g., 1.75):")
+        await update.message.reply_text("Enter your height (in meters, for example 1.75):")
         return HEIGHT
     except ValueError:
         await update.message.reply_text("Please enter a valid number for age.")
@@ -296,14 +296,14 @@ async def favc(update: Update, context: CallbackContext) -> int:
     user_data[user_id]['favc'] = favc_value
     user_data[user_id]['favc_code'] = favc_value
 
-    await query.edit_message_text("How many times do you eat vegetables per meal? (Enter a number from 1-3):")
+    await query.edit_message_text("How many times do you eat vegetables per meal? (for example 3):")
     return FCVC
 
 async def fcvc(update: Update, context: CallbackContext) -> int:
     user_id = update.effective_user.id
     try:
         user_data[user_id]['fcvc'] = float(update.message.text)
-        await update.message.reply_text("How many main meals do you have daily? (Enter a number from 1-4):")
+        await update.message.reply_text("How many main meals do you have daily? (for example 4):")
         return NCP
     except ValueError:
         await update.message.reply_text("Please enter a valid number.")
@@ -365,7 +365,7 @@ async def smoke(update: Update, context: CallbackContext) -> int:
     user_data[user_id]['smoke'] = smoke_value
     user_data[user_id]['smoke_code'] = smoke_value
 
-    await query.edit_message_text("How much water do you drink daily? (Liters, e.g., 2.5):")
+    await query.edit_message_text("How much water do you drink daily? (Liters, for example 2.5):")
     return CH2O
 
 async def ch2o(update: Update, context: CallbackContext) -> int:
@@ -399,14 +399,14 @@ async def scc(update: Update, context: CallbackContext) -> int:
     user_data[user_id]['scc'] = scc_value
     user_data[user_id]['scc_code'] = scc_value
 
-    await query.edit_message_text("How often do you have physical activity? (Hours per week, e.g., 3):")
+    await query.edit_message_text("How often do you have physical activity? (Hours per week, for example 3):")
     return FAF
 
 async def faf(update: Update, context: CallbackContext) -> int:
     user_id = update.effective_user.id
     try:
         user_data[user_id]['faf'] = float(update.message.text)
-        await update.message.reply_text("How much time do you use technological devices daily? (Hours, e.g., 4):")
+        await update.message.reply_text("How much time do you use technological devices daily? (Hours, for example 4):")
         return TUE
     except ValueError:
         await update.message.reply_text("Please enter a valid number.")
