@@ -114,8 +114,18 @@ def predict_image(image: np.ndarray, model_name: str) -> str:
 
 def predict_obesity(user_inputs: dict) -> str:
     """Predict obesity category and return a readable result."""
-    processed_inputs = np.array(list(user_inputs.values())).reshape(1, -1)
-    prediction = obesity_model.predict(processed_inputs)[0]  # Assuming model output is an encoded integer
+    # Extract features in the correct order
+    feature_order = [
+        'age', 'height', 'weight', 'fcvc', 'ncp', 'ch2o', 'faf', 'tue',
+        'gender_code', 'calc_code', 'favc_code', 'scc_code', 'smoke_code',
+        'family_history_with_overweight_code', 'caec_code', 'mtrans_code'
+    ]
+    
+    # Create input array with properly ordered features
+    input_values = [user_inputs[feature] for feature in feature_order]
+    processed_inputs = np.array(input_values).reshape(1, -1)
+    
+    prediction = obesity_model.predict(processed_inputs)[0]
     
     obesity_advice = {
         "Insufficient Weight": "⚠️ You may need to consume more balanced meals with proteins and healthy fats. Consider consulting a nutritionist.",
@@ -202,8 +212,12 @@ async def gender(update: Update, context: CallbackContext) -> int:
     await query.answer()
     
     user_id = update.effective_user.id
-    user_data[user_id]['gender'] = int(query.data)
+    gender_value = int(query.data)
     
+    # Store both standard and code values for gender
+    user_data[user_id]['gender'] = gender_value
+    user_data[user_id]['gender_code'] = gender_value
+
     await query.edit_message_text("Enter your age:")
     return AGE
 
@@ -252,18 +266,23 @@ async def family_history(update: Update, context: CallbackContext) -> int:
     await query.answer()
     
     user_id = update.effective_user.id
-    user_data[user_id]['family_history_with_overweight'] = int(query.data)
+    family_history_value = int(query.data)
     
+    # Store both standard and code values
+    user_data[user_id]['family_history_with_overweight'] = family_history_value
+    user_data[user_id]['family_history_with_overweight_code'] = family_history_value
+
     keyboard = [
         [InlineKeyboardButton("No", callback_data="0"),
          InlineKeyboardButton("Yes", callback_data="1")]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    
+
     await query.edit_message_text(
         "Do you eat high caloric food frequently?",
         reply_markup=reply_markup
     )
+    
     return FAVC
 
 async def favc(update: Update, context: CallbackContext) -> int:
@@ -271,8 +290,12 @@ async def favc(update: Update, context: CallbackContext) -> int:
     await query.answer()
     
     user_id = update.effective_user.id
-    user_data[user_id]['favc'] = int(query.data)
+    favc_value = int(query.data)
     
+    # Store both standard and code values
+    user_data[user_id]['favc'] = favc_value
+    user_data[user_id]['favc_code'] = favc_value
+
     await query.edit_message_text("How many times do you eat vegetables per meal? (Enter a number from 1-3):")
     return FCVC
 
@@ -284,8 +307,8 @@ async def fcvc(update: Update, context: CallbackContext) -> int:
         return NCP
     except ValueError:
         await update.message.reply_text("Please enter a valid number.")
-        return FCVC
-
+        return FCVC  # Assuming FCVC is a valid state
+        
 async def ncp(update: Update, context: CallbackContext) -> int:
     user_id = update.effective_user.id
     try:
@@ -313,7 +336,11 @@ async def caec(update: Update, context: CallbackContext) -> int:
     await query.answer()
     
     user_id = update.effective_user.id
-    user_data[user_id]['caec'] = int(query.data)
+    caec_value = int(query.data)
+    
+    # Store both standard and code values
+    user_data[user_id]['caec'] = caec_value
+    user_data[user_id]['caec_code'] = caec_value
     
     keyboard = [
         [InlineKeyboardButton("No", callback_data="0"),
@@ -332,17 +359,12 @@ async def smoke(update: Update, context: CallbackContext) -> int:
     await query.answer()
     
     user_id = update.effective_user.id
-    user_data[user_id]['smoke'] = int(query.data)
+    smoke_value = int(query.data)
     
-    await query.edit_message_text("How much water do you drink daily? (Liters, e.g., 2.5):")
-    return
-async def smoke(update: Update, context: CallbackContext) -> int:
-    query = update.callback_query
-    await query.answer()
-    
-    user_id = update.effective_user.id
-    user_data[user_id]['smoke'] = int(query.data)
-    
+    # Store both standard and code values
+    user_data[user_id]['smoke'] = smoke_value
+    user_data[user_id]['smoke_code'] = smoke_value
+
     await query.edit_message_text("How much water do you drink daily? (Liters, e.g., 2.5):")
     return CH2O
 
@@ -371,8 +393,12 @@ async def scc(update: Update, context: CallbackContext) -> int:
     await query.answer()
     
     user_id = update.effective_user.id
-    user_data[user_id]['scc'] = int(query.data)
+    scc_value = int(query.data)
     
+    # Store both standard and code values
+    user_data[user_id]['scc'] = scc_value
+    user_data[user_id]['scc_code'] = scc_value
+
     await query.edit_message_text("How often do you have physical activity? (Hours per week, e.g., 3):")
     return FAF
 
@@ -413,8 +439,12 @@ async def calc(update: Update, context: CallbackContext) -> int:
     await query.answer()
     
     user_id = update.effective_user.id
-    user_data[user_id]['calc'] = int(query.data)
+    calc_value = int(query.data)
     
+    # Store both standard and code values
+    user_data[user_id]['calc'] = calc_value
+    user_data[user_id]['calc_code'] = calc_value
+
     keyboard = [
         [InlineKeyboardButton("Automobile", callback_data="0"),
          InlineKeyboardButton("Bike", callback_data="1")],
@@ -435,30 +465,27 @@ async def mtrans(update: Update, context: CallbackContext) -> int:
     await query.answer()
     
     user_id = update.effective_user.id
-    user_data[user_id]['mtrans'] = int(query.data)
+    mtrans_value = int(query.data)
     
-    # Ensure all required data is collected
-    input_data = {
-        'gender': user_data[user_id]['gender'],
-        'age': user_data[user_id]['age'],
-        'height': user_data[user_id]['height'],
-        'weight': user_data[user_id]['weight'],
-        'family_history_with_overweight': user_data[user_id]['family_history_with_overweight'],
-        'favc': user_data[user_id]['favc'],
-        'fcvc': user_data[user_id]['fcvc'],
-        'ncp': user_data[user_id]['ncp'],
-        'caec': user_data[user_id]['caec'],
-        'smoke': user_data[user_id]['smoke'],
-        'ch2o': user_data[user_id]['ch2o'],
-        'scc': user_data[user_id]['scc'],
-        'faf': user_data[user_id]['faf'],
-        'tue': user_data[user_id]['tue'],
-        'calc': user_data[user_id]['calc'],
-        'mtrans': user_data[user_id]['mtrans']
-    }
+    # Store both standard and code values
+    user_data[user_id]['mtrans'] = mtrans_value
+    user_data[user_id]['mtrans_code'] = mtrans_value
+    
+    # Check if all required data is present
+    required_features = [
+        'age', 'height', 'weight', 'fcvc', 'ncp', 'ch2o', 'faf', 'tue',
+        'gender_code', 'calc_code', 'favc_code', 'scc_code', 'smoke_code',
+        'family_history_with_overweight_code', 'caec_code', 'mtrans_code'
+    ]
+    
+    for feature in required_features:
+        if feature not in user_data[user_id]:
+            await query.edit_message_text(f"Error: Missing data for {feature}. Please start the assessment again.")
+            del user_data[user_id]
+            return ConversationHandler.END
     
     # Get prediction
-    result = predict_obesity(input_data)
+    result = predict_obesity(user_data[user_id])
     
     await query.edit_message_text(f"Assessment complete!\n\n{result}")
     
@@ -520,4 +547,3 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
-
