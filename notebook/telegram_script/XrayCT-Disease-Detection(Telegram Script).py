@@ -165,7 +165,7 @@ async def help_command(update: Update, context: CallbackContext) -> None:
 async def select_model(update: Update, context: CallbackContext, model_name: str) -> None:
     global selected_model
     selected_model = model_name
-    await update.message.reply_text(f"✅ {model_name.replace('_', ' ').title()} detection model activated. Send an X-ray image now.")
+    await update.message.reply_text(f"✅ {model_name.replace('_', ' ').title()} detection model activated. Send an image now.")
 
 async def handle_image(update: Update, context: CallbackContext) -> None:
     global selected_model
