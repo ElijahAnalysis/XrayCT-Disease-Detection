@@ -1,0 +1,9 @@
+asyncio
+numpy
+opencv-python-headless
+python-telegram-bot
+tensorflow
+nest-asyncio
+joblib
+os
+scikit-learn
