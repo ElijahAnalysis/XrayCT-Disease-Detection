@@ -10,7 +10,7 @@ import nest_asyncio
 import time
 import joblib
 from telegram.error import NetworkError
-
+import os 
 # Fix event loop issues in Jupyter Notebook
 nest_asyncio.apply()
 
