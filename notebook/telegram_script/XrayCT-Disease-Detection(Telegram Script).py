@@ -155,11 +155,10 @@ async def start(update: Update, context: CallbackContext) -> None:
 async def help_command(update: Update, context: CallbackContext) -> None:
     await update.message.reply_text(
         "This bot can analyze lung X-ray, CT-Scans and health information. Use the following commands:\n\n"
-        "/select_pneumonia - Activate pneumonia detection\n"
-        "/select_lung_cancer - Activate lung cancer detection\n"
-        "/select_tuberculosis - Activate tuberculosis detection\n"
-        "/assess_obesity - Start obesity assessment questionnaire\n"
-        "Send an X-ray image after selecting a model to get a prediction."
+        "/select_pneumonia - Activate pneumonia detection (X-Ray Images)\n"
+        "/select_lung_cancer - Activate lung cancer detection (CT-Scan Images)\n"
+        "/select_tuberculosis - Activate tuberculosis detection (X-Ray Images)\n"
+        "/assess_obesity - Start obesity assessment questionnaire (Health info)\n"
     )
 
 async def select_model(update: Update, context: CallbackContext, model_name: str) -> None:
