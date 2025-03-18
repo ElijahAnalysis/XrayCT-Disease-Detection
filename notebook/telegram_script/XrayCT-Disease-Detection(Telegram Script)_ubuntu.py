@@ -43,7 +43,7 @@ BASE_DIR = "/root/xray_med_bot/XrayCT-Disease-Detection/models"
 
 PNEUMONIA_MODEL_PATH = os.path.join(BASE_DIR, "pneumonia", "lung_xray_scan_cases_sequential_neural_net_version2.keras")
 LUNG_CANCER_MODEL_PATH = os.path.join(BASE_DIR, "lung_tumor", "lung_ct_scan_cases_sequential_neural_net.keras")
-TUBERCULOSIS_MODEL_PATH = os.path.join(BASE_DIR, "tuberculosis", "tuberculosis_xray_scans_sequential_neural_net.keras")
+TUBERCULOSIS_MODEL_PATH = os.path.join(BASE_DIR, "tuberculosis", "lung_xray_tuberculosis_scans_sequential_neural_net.keras")
 OBESITY_MODEL_PATH = os.path.join(BASE_DIR, "obesity", "obesity_stacking.joblib")
 
 # Load models
