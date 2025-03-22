@@ -132,8 +132,8 @@ def predict_obesity(user_inputs: dict) -> str:
         "Obesity Type I": "⚠️ It's important to manage weight through a combination of diet, exercise, and medical advice.",
         "Obesity Type II": "⚠️ Consider structured weight management plans with guidance from healthcare professionals.",
         "Obesity Type III": "🚨 High-risk category! Consult a doctor to develop a personalized plan to improve health.",
-        "Overweight Level I": "⚠️ Try incorporating more physical activity and balanced meals into your routine.",
-        "Overweight Level II": "⚠️ A structured diet and exercise plan can help you move towards a healthier weight."
+        "Overweight Level I": "⚠️ It's not obesity , but : Try incorporating more physical activity and balanced meals into your routine.",
+        "Overweight Level II": "⚠️ It's not obesity , but : A structured diet and exercise plan can help you move towards a healthier weight."
     }
     
     result_label = OBESITY_LABELS[prediction]
