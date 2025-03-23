@@ -14,42 +14,18 @@ from telegram.error import NetworkError
 # Fix event loop issues in Jupyter Notebook
 nest_asyncio.apply()
 
-# Define custom loss function
-class WeightedSparseCategoricalCrossentropy(tf.keras.losses.Loss):
-    def __init__(self, weights, name="WeightedSparseCategoricalCrossentropy"):
-        super().__init__(name=name)
-        self.weights = tf.convert_to_tensor(weights, dtype=tf.float32)
-
-    def call(self, y_true, y_pred):
-        y_true = tf.cast(y_true, tf.int32)
-        y_pred = tf.nn.softmax(y_pred)
-        loss = tf.keras.losses.sparse_categorical_crossentropy(y_true, y_pred)
-        weight = tf.gather(self.weights, y_true)
-        return loss * weight
-
-    def get_config(self):
-        return {"weights": self.weights.numpy().tolist()}
-
-    @classmethod
-    def from_config(cls, config):
-        weights = np.array(config.get("weights", [1.0, 1.0, 1.0]), dtype=np.float32)
-        return cls(weights=weights)
-
-# Custom loss instance
-custom_loss = WeightedSparseCategoricalCrossentropy(weights=[1.0, 1.5, 2.0])
-
 # Model paths
-PNEUMONIA_MODEL_PATH = r"C:\Users\User\Desktop\DATA SCIENCE\Github\XrayCT-Disease-Detection\models\pneumonia\lung_xray_scan_cases_sequential_neural_net_version2.keras"
+PNEUMONIA_MODEL_PATH = r"C:\Users\User\Desktop\DATA SCIENCE\Github\XrayCT-Disease-Detection\models\pneumonia\lung_scans_pneumonia_sequential_neural_net.keras"
 
-LUNG_CANCER_MODEL_PATH = r"C:\Users\User\Desktop\DATA SCIENCE\Github\XrayCT-Disease-Detection\models\lung_tumor\lung_ct_scan_cases_sequential_neural_net.keras"
+LUNG_CANCER_MODEL_PATH = r"C:\Users\User\Desktop\DATA SCIENCE\Github\XrayCT-Disease-Detection\models\lung_tumor\lung_tumor_sequential_neural_net.keras"
 
-TUBERCULOSIS_MODEL_PATH = r"C:\Users\User\Desktop\DATA SCIENCE\Github\XrayCT-Disease-Detection\models\tuberculosis\tuberculosis_xray_scans_sequential_neural_net.keras"
+TUBERCULOSIS_MODEL_PATH = r"C:\Users\User\Desktop\DATA SCIENCE\Github\XrayCT-Disease-Detection\models\tuberculosis\lung_xray_tuberculosis_scans_sequential_neural_net.keras"
 
 OBESITY_MODEL_PATH = r"C:\Users\User\Desktop\DATA SCIENCE\Github\XrayCT-Disease-Detection\models\obesity\obesity_stacking.joblib"  # Add path to your obesity model
 
 # Load models
 pneumonia_model = load_model(PNEUMONIA_MODEL_PATH)
-lung_cancer_model = load_model(LUNG_CANCER_MODEL_PATH, custom_objects={"WeightedSparseCategoricalCrossentropy": lambda: custom_loss})
+lung_cancer_model = load_model(LUNG_CANCER_MODEL_PATH)
 tuberculosis_model = load_model(TUBERCULOSIS_MODEL_PATH)
 obesity_model = joblib.load(OBESITY_MODEL_PATH)  # Load the obesity model
 
@@ -133,8 +109,8 @@ def predict_obesity(user_inputs: dict) -> str:
         "Obesity Type I": "⚠️ It's important to manage weight through a combination of diet, exercise, and medical advice.",
         "Obesity Type II": "⚠️ Consider structured weight management plans with guidance from healthcare professionals.",
         "Obesity Type III": "🚨 High-risk category! Consult a doctor to develop a personalized plan to improve health.",
-        "Overweight Level I": "⚠️ Try incorporating more physical activity and balanced meals into your routine.",
-        "Overweight Level II": "⚠️ A structured diet and exercise plan can help you move towards a healthier weight."
+        "Overweight Level I": "⚠️ it's not obesity , but : Try incorporating more physical activity and balanced meals into your routine.",
+        "Overweight Level II": " it's not obesity , but : ⚠️ A structured diet and exercise plan can help you move towards a healthier weight."
     }
     
     result_label = OBESITY_LABELS[prediction]

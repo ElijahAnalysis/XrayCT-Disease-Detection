@@ -14,41 +14,19 @@ import os
 # Fix event loop issues in Jupyter Notebook
 nest_asyncio.apply()
 
-# Define custom loss function
-class WeightedSparseCategoricalCrossentropy(tf.keras.losses.Loss):
-    def __init__(self, weights, name="WeightedSparseCategoricalCrossentropy"):
-        super().__init__(name=name)
-        self.weights = tf.convert_to_tensor(weights, dtype=tf.float32)
-
-    def call(self, y_true, y_pred):
-        y_true = tf.cast(y_true, tf.int32)
-        y_pred = tf.nn.softmax(y_pred)
-        loss = tf.keras.losses.sparse_categorical_crossentropy(y_true, y_pred)
-        weight = tf.gather(self.weights, y_true)
-        return loss * weight
-
-    def get_config(self):
-        return {"weights": self.weights.numpy().tolist()}
-
-    @classmethod
-    def from_config(cls, config):
-        weights = np.array(config.get("weights", [1.0, 1.0, 1.0]), dtype=np.float32)
-        return cls(weights=weights)
-
-# Custom loss instance
-custom_loss = WeightedSparseCategoricalCrossentropy(weights=[1.0, 1.5, 2.0])
-
 # Define model paths
 BASE_DIR = "/root/xray_med_bot/XrayCT-Disease-Detection/models"
 
 PNEUMONIA_MODEL_PATH = os.path.join(BASE_DIR, "pneumonia", "lung_scans_pneumonia_sequential_neural_net.keras")
 LUNG_CANCER_MODEL_PATH = os.path.join(BASE_DIR, "lung_tumor", "lung_ct_scan_cases_sequential_neural_net.keras")
+
 TUBERCULOSIS_MODEL_PATH = os.path.join(BASE_DIR, "tuberculosis", "lung_xray_tuberculosis_scans_sequential_neural_net.keras")
 OBESITY_MODEL_PATH = os.path.join(BASE_DIR, "obesity", "obesity_stacking.joblib")
 
+
 # Load models
 pneumonia_model = load_model(PNEUMONIA_MODEL_PATH)
-lung_cancer_model = load_model(LUNG_CANCER_MODEL_PATH, custom_objects={"WeightedSparseCategoricalCrossentropy": lambda: custom_loss})
+lung_cancer_model = load_model(LUNG_CANCER_MODEL_PATH)
 tuberculosis_model = load_model(TUBERCULOSIS_MODEL_PATH)
 obesity_model = joblib.load(OBESITY_MODEL_PATH)  # Load the obesity model
 
